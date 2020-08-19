@@ -29,5 +29,7 @@ class allObservations(models.Model):
     detOb = models.TextField()
     risk= models.TextField()
     recommendation = models.TextField()
+    comments = models.CharField(max_length=250, null=True, blank=True)
+
     def __str__(self):
         return self.observation
