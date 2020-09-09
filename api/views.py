@@ -1,22 +1,21 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from .models import allObservations
-from .serializers import mySerializer
+from rest_framework import viewsets, status
+from .models import appsecObservation, vaptPlugin, vaptObservation
+from .serializers import appsecSerializer, vaptPluginSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 
 class appsecViewSet(viewsets.ModelViewSet):
-    queryset = allObservations.objects.filter(ptype="Application Security")
-    serializer_class = mySerializer
+    queryset = appsecObservation.objects.all()
+    serializer_class = appsecSerializer
 
-class networkViewSet(viewsets.ModelViewSet):
-    queryset = allObservations.objects.filter(ptype="Network Architecture Review")
-    serializer_class = mySerializer
-
-class vaViewSet(viewsets.ModelViewSet):
-    queryset = allObservations.objects.filter(ptype="Vulnerability Assessment")
-    serializer_class = mySerializer
-
-class mobsecViewSet(viewsets.ModelViewSet):
-    queryset = allObservations.objects.filter(ptype="Mobile Application Security")
-    serializer_class = mySerializer
+@api_view(['POST'])
+def sendVAPTObs(request):
+    if request.method == "POST":
+        requested_plugins = request.data["plugins"]
+        requested_observations = vaptPlugin.objects.filter(pluginID__in=requested_plugins)
+        serialied_obs = vaptPluginSerializer(requested_observations, many = True)
+        return Response(serialied_obs.data)
+    return Response({"error": "Incorrect method"})

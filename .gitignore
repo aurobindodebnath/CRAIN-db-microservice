@@ -2,3 +2,4 @@
 myprojectenv/
 reportMakerAPI/__pycache__/
 api/migrations/
+api/__pycache__/
