@@ -48,3 +48,26 @@ class vaptPlugin(models.Model):
 
   def __str__(self):
     return self.pluginID + ' - ' + self.vapt_observation.observation
+
+
+class scrObservation(models.Model):
+    CHOICES = (
+		('High','High'),
+		('Medium','Medium'),
+		('Low','Low'),
+		)
+    LANGUAGE = (
+      ('Java','Java'),
+      ('Python','Python'),
+    )
+    observation = models.CharField(max_length=200)
+    abbr = models.CharField(max_length=8)
+    criticality = models.CharField(max_length=10,choices=CHOICES,default='High')
+    language = models.CharField(max_length=10,choices=LANGUAGE)
+    detOb = models.TextField()
+    risk= models.TextField()
+    recommendation = models.TextField()
+    comments = models.CharField(max_length=250, null=True, blank=True)
+
+    def __str__(self):
+        return self.observation

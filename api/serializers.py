@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import appsecObservation, vaptObservation, vaptPlugin
+from .models import appsecObservation, vaptObservation, vaptPlugin, scrObservation
 
 class appsecSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,6 +9,11 @@ class appsecSerializer(serializers.ModelSerializer):
 class vaptSerializer(serializers.ModelSerializer):
     class Meta:
         model = vaptObservation
+        fields = '__all__'
+
+class scrSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = scrObservation
         fields = '__all__'
 
 class vaptPluginSerializer(serializers.ModelSerializer):
