@@ -4,12 +4,13 @@ from api import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'appsec', views.appsecViewSet)		# Web App Sec
-router.register(r'network', views.networkViewSet)	# Network Arch 
-router.register(r'va', views.vaViewSet)				# Network VAPT
-router.register(r'mobsec', views.mobsecViewSet)		# Mobile App Sec
+router.register(r'appsec', views.appsecViewSet)
+router.register(r'scr', views.scrViewSet)
+router.register(r'va', views.vaViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     path('mnbvcxz/', admin.site.urls),
+    path('va-elliot/', views.sendVAPTObs),
+    path('fill/', views.fillObservations),
 ]
