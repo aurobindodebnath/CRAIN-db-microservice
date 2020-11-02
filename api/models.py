@@ -57,6 +57,7 @@ class scrObservation(models.Model):
 		('Low','Low'),
 		)
     LANGUAGE = (
+      ('None', 'None'),
       ('Java','Java'),
       ('Python','Python'),
     )
