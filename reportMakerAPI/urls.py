@@ -12,5 +12,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('mnbvcxz/', admin.site.urls),
     path('va-elliot/', views.sendVAPTObs),
-    path('fill/', views.fillObservations),
+    path('fill/appsec/', views.fillObservationsAppsec),
+    path('fill/va/', views.fillObservationsVA),
+    path('fill/scr/', views.fillObservationsSCR),
 ]
