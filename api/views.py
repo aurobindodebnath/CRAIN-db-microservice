@@ -30,24 +30,41 @@ def sendVAPTObs(request):
         return Response(serialied_obs.data)
     return Response({"error": "Incorrect method"})
 
-def fillObservations(request):
-    if request.user.is_superuser:
+def fillObservationsAppsec(request):
+    if request.user.is_authenticated and request.user.is_superuser:
         wb = load_workbook(os.path.join(BASE_DIR, 'obs.xlsx'))
         ws_appsec = wb['appsec']
-        ws_scr = wb['scr']
-        ws_va = wb['va']
 
         # APPSEC
         for row in ws_appsec.iter_rows(min_row = 2, min_col = 1, max_col = 6):
             appsecObservation.objects.create(observation=row[0].value, detOb=row[1].value, criticality=row[2].value, risk=row[3].value, recommendation=row[4].value, abbr=row[5].value).save()
 
-        # SOURCE CODE REVIEW
-        for row in ws_scr.iter_rows(min_row = 2, min_col = 1, max_col = 7):
-            scrObservation.objects.create(observation=row[0].value, detOb=row[1].value, criticality=row[2].value, risk=row[3].value, recommendation=row[4].value, abbr=row[5].value, language=row[6].value).save()
+        wb.close()
+        return JsonResponse({'result': 'Database Filled'})
+    return JsonResponse({'result': 'Not Allowed'})
+
+def fillObservationsVA(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        wb = load_workbook(os.path.join(BASE_DIR, 'obs.xlsx'))
+        ws_va = wb['va']
 
         # VULNERABILITY ASSESSMENT
         for row in ws_va.iter_rows(min_row = 2, min_col = 1, max_col = 6):
             vaptObservation.objects.create(observation=row[0].value, detOb=row[1].value, criticality=row[2].value, risk=row[3].value, recommendation=row[4].value, abbr=row[5].value).save()
 
+        wb.close()
+
+        return JsonResponse({'result': 'Database Filled'})
+    return JsonResponse({'result': 'Not Allowed'})
+
+def fillObservationsSCR(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        wb = load_workbook(os.path.join(BASE_DIR, 'obs.xlsx'))
+        ws_scr = wb['scr']
+
+        # SOURCE CODE REVIEW
+        for row in ws_scr.iter_rows(min_row = 2, min_col = 1, max_col = 7):
+            scrObservation.objects.create(observation=row[0].value, detOb=row[1].value, criticality=row[2].value, risk=row[3].value, recommendation=row[4].value, abbr=row[5].value, language=row[6].value).save()
+        wb.close()
         return JsonResponse({'result': 'Database Filled'})
     return JsonResponse({'result': 'Not Allowed'})
